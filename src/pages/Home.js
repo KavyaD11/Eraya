@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const Home = () => {
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero  */}
       <section className="hero">
         <div className="hero-bg-image"></div>
         <div className="hero-bg-overlay"></div>
@@ -18,16 +18,16 @@ const Home = () => {
         <div className="hero-blur-gradient"></div>
       </section>
 
-      {/* Customize Section */}
+      {/* Customize */}
       <section className="customize-section">
         <Container>
           <div className="customize-card">
             <div className="customize-content">
               <h2>CUSTOMIZE</h2>
               <h3>Your Own Bag</h3>
-              <Button 
+              <Button
                 as={Link}
-                to="/customize" 
+                to="/customize"
                 className="btn-primary"
               >
                 Start Designing
@@ -37,58 +37,44 @@ const Home = () => {
         </Container>
       </section>
 
-      {/* Product Categories */}
       <section className="product-categories">
         <Container>
           <h2 className="section-title">Our Products</h2>
           <p className="section-subtitle">Browse our collection or create your own</p>
-          
+
           <Row>
             <Col lg={4} md={6} className="mb-4">
               <div className="category-card">
                 <div className="card-img-container">
-                  <img 
-                    src="/images/tote-bag-1.jpg" 
-                    alt="Tote Bag" 
-                    className="category-img"
-                  />
-                </div>
-                <div className="card-body">
-                  <h5>Details</h5>
-                  <Button as={Link} to="/shop" className="btn-outline">View Products</Button>
-                </div>
-              </div>
-            </Col>
-            
-            {/* Add more product categories as needed */}
-            <Col lg={4} md={6} className="mb-4">
-              <div className="category-card">
-                <div className="card-img-container">
-                  <img 
-                    src="/images/tote-bag-2.jpg" 
-                    alt="Canvas Tote" 
-                    className="category-img"
-                  />
+                  <img src="/Bag1.png" alt="..." className="category-img" />
                 </div>
                 <div className="card-body">
                   <h5>Custom Canvas</h5>
-                  <Button as={Link} to="/shop" className="btn-outline">View Products</Button>
+                  <Button as={Link} to="/shop">View Products</Button>
                 </div>
               </div>
             </Col>
-            
+
             <Col lg={4} md={6} className="mb-4">
-              <div className="category-card">
+            <div className="category-card">
                 <div className="card-img-container">
-                  <img 
-                    src="/images/tote-bag-3.jpg" 
-                    alt="Designer Tote" 
-                    className="category-img"
-                  />
+                  <img src="/Bag2.png" alt="..." className="category-img" />
                 </div>
                 <div className="card-body">
-                  <h5>Designer Collection</h5>
-                  <Button as={Link} to="/shop" className="btn-outline">View Products</Button>
+                  <h5>Custom Canvas</h5>
+                  <Button as={Link} to="/shop">View Products</Button>
+                </div>
+              </div>
+            </Col>
+
+            <Col lg={4} md={6} className="mb-4">
+            <div className="category-card">
+                <div className="card-img-container">
+                  <img src="/Bag3.png" alt="..." className="category-img" />
+                </div>
+                <div className="card-body">
+                  <h5>Custom Canvas</h5>
+                  <Button as={Link} to="/shop">View Products</Button>
                 </div>
               </div>
             </Col>
@@ -96,12 +82,11 @@ const Home = () => {
         </Container>
       </section>
 
-      {/* Features Section */}
       <section className="section">
         <Container>
           <h2 className="section-title">Why Choose Eraya?</h2>
           <p className="section-subtitle">Express yourself with personalized designs</p>
-          
+
           <Row className="mt-5">
             <Col lg={4} md={6} className="mb-4">
               <div className="feature-card text-center">
@@ -112,7 +97,7 @@ const Home = () => {
                 <p className="text-light">Create a unique bag that reflects your personal style and creativity.</p>
               </div>
             </Col>
-            
+
             <Col lg={4} md={6} className="mb-4">
               <div className="feature-card text-center">
                 <div className="feature-icon mb-3">
@@ -122,7 +107,7 @@ const Home = () => {
                 <p className="text-light">All our products are made with high-quality materials built to last.</p>
               </div>
             </Col>
-            
+
             <Col lg={4} md={6} className="mb-4">
               <div className="feature-card text-center">
                 <div className="feature-icon mb-3">
