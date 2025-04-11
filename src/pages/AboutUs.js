@@ -10,17 +10,18 @@ const AboutUs = () => {
           <Col lg={6} className="mb-4 mb-lg-0">
             <h2>About Eraya</h2>
             <p>
-              At Eraya, we believe that fashion is a form of self-expression, and everyone deserves to 
-              have accessories that truly reflect their unique personality and style.
+              Eraya is more than just a bag brand—it's a celebration of stories, emotions, and the little moments that make life meaningful.
+               Born from the idea of turning everyday essentials into expressions of individuality,
+               we create versatile, handcrafted bags that blend functionality with heartfelt design.
             </p>
             <p>
-              Founded in 2023, Eraya began with a simple idea: create high-quality, customizable bags that 
-              allow our customers to express their creativity and individuality.
+            At Eraya, we believe that a bag should carry more than just your belongings—it should carry your story.
+             Whether it’s a convertible tote-to-backpack that keeps up with your dynamic lifestyle, or a custom-made piece crafted from a cherished saree,
+             every Eraya bag is designed to be a part of your journey.
             </p>
             <p>
-              Our name "Eraya" comes from the concept of "era," representing evolution and uniqueness, 
-              combined with "raya," meaning celebration – together symbolizing our celebration of 
-              self-expression through fashion.
+            Our mission is to create comforting, personalized experiences, making our customers feel seen, valued, and connected.
+             Every product we design reflects our commitment to sustainability, sentimentality, and style.
             </p>
           </Col>
           <Col lg={6}>
@@ -77,28 +78,28 @@ const AboutUs = () => {
             <h2 className="text-center mb-4">Our Process</h2>
             <div className="process-timeline">
               <div className="process-step">
-                <div className="process-icon">1</div>
+                <div className="process-icon"></div>
                 <h5>Design</h5>
                 <p>
                   Use our intuitive design tool to create your own unique bag design.
                 </p>
               </div>
               <div className="process-step">
-                <div className="process-icon">2</div>
+                <div className="process-icon"></div>
                 <h5>Craft</h5>
                 <p>
                   Our skilled artisans transform your design into a high-quality bag.
                 </p>
               </div>
               <div className="process-step">
-                <div className="process-icon">3</div>
+                <div className="process-icon"></div>
                 <h5>Deliver</h5>
                 <p>
                   Your custom-made bag is carefully packaged and delivered to your doorstep.
                 </p>
               </div>
               <div className="process-step">
-                <div className="process-icon">4</div>
+                <div className="process-icon"></div>
                 <h5>Enjoy</h5>
                 <p>
                   Carry your one-of-a-kind bag with pride, knowing it's uniquely yours.

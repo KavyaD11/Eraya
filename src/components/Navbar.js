@@ -30,7 +30,7 @@ const Navbar = () => {
       <Container>
         <Link to="/" className="navbar-brand">
           <img 
-            src="Group 2.png" 
+            src="Eraya'sLogo.png" 
             alt="ERAYA Logo" 
             height="50" 
             className="d-inline-block align-top me-2"
@@ -46,14 +46,6 @@ const Navbar = () => {
             <Nav.Link as={Link} to="/blogs">Blogs</Nav.Link>
             <Nav.Link as={Link} to="/contact">Contact Us</Nav.Link>
           </Nav>
-          <Button 
-            variant="outline-light" 
-            className="ms-3"
-            as={Link}
-            to="/signin"
-          >
-            Sign Up
-          </Button>
         </BootstrapNavbar.Collapse>
       </Container>
     </BootstrapNavbar>

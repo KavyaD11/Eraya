@@ -18,7 +18,7 @@ const Home = () => {
         <div className="hero-blur-gradient"></div>
       </section>
 
-      {/* Customize */}
+
       <section className="customize-section">
         <Container>
           <div className="customize-card">
@@ -58,7 +58,7 @@ const Home = () => {
             <Col lg={4} md={6} className="mb-4">
             <div className="category-card">
                 <div className="card-img-container">
-                  <img src="/Bag2.png" alt="..." className="category-img" />
+                  <img src="/Bag12.png" alt="..." className="category-img" />
                 </div>
                 <div className="card-body">
                   <h5>Custom Canvas</h5>

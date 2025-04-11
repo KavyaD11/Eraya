@@ -1,129 +1,55 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
-import { FaPaintBrush, FaFont, FaImage, FaUndo, FaRedo, FaSave, FaDownload } from 'react-icons/fa';
+import { FaPaintBrush, FaFont, FaImage, FaUndo, FaRedo, FaSave, FaDownload, FaPalette } from 'react-icons/fa';
 
 const CustomizeBag = () => {
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
   const [ctx, setCtx] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [tool, setTool] = useState('brush'); // brush, text, image
+  const [tool, setTool] = useState('brush');
   const [color, setColor] = useState('#000000');
   const [brushSize, setBrushSize] = useState(5);
-  const [bagColor, setBagColor] = useState('#C8E6C9'); // Default mint green
+  const [bagColor, setBagColor] = useState('#C8E6C9');
   const [text, setText] = useState('');
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [bagImage, setBagImage] = useState(null);
   const [isCanvasReady, setIsCanvasReady] = useState(false);
   
-  // Initialize canvas
-  useEffect(() => {
-    // Set up canvas context first
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    const context = canvas.getContext('2d');
-    setCtx(context);
-    
-    // Load the mint bag image
-    const img = new Image();
-    img.crossOrigin = "Anonymous"; // Handle CORS if needed
-    img.src = '/mint-bag-template.png'; // Update path to your mint bag image
-    
-    img.onload = () => {
-      setBagImage(img);
-      
-      // Draw initial bag - no need for color overlay since mint is the base color
-      drawBag(context, img);
-      
-      // Save initial state
-      saveState(canvas);
-      
-      // Mark canvas as ready
-      setIsCanvasReady(true);
-    };
-    
-    img.onerror = (e) => {
-      console.error("Error loading bag image:", e);
-      // Draw a placeholder mint bag instead
-      drawPlaceholderBag(context);
-      saveState(canvas);
-      setIsCanvasReady(true);
-    };
-  }, []);
+  const colorOptions = [
+    { name: 'Mint', value: '#C8E6C9' },
+    { name: 'Lavender', value: '#D1C4E9' },
+    { name: 'Sky Blue', value: '#BBDEFB' },
+    { name: 'Lemon', value: '#FFF59D' },
+    { name: 'Rose', value: '#F8BBD0' },
+    { name: 'Teal', value: '#B2DFDB' },
+    { name: 'Peach', value: '#FFCCBC' }
+  ];
   
-  // Draw placeholder bag if image fails to load
-  const drawPlaceholderBag = (context) => {
-    if (!context) return;
-    
-    const canvas = canvasRef.current;
-    const bagWidth = canvas.width * 0.7;
-    const bagHeight = canvas.height * 0.8;
-    const x = (canvas.width - bagWidth) / 2;
-    const y = (canvas.height - bagHeight) / 2;
-    
-    // Clear canvas
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Mint color
-    const mintColor = '#DBFFD9';
-    
-    // Bag body
-    context.fillStyle = mintColor;
-    context.beginPath();
-    context.roundRect 
-      ? context.roundRect(x, y + bagHeight * 0.2, bagWidth, bagHeight * 0.8, 10)
-      : roundRectFallback(context, x, y + bagHeight * 0.2, bagWidth, bagHeight * 0.8, 10);
-    context.fill();
-    
-    // Draw handle outlines
-    const handleWidth = bagWidth * 0.05;
-    const handleSpacing = bagWidth * 0.3;
-    const handleHeight = bagHeight * 0.4;
-    const handleY = y;
-    
-    // Left handle
-    context.beginPath();
-    context.moveTo(x + bagWidth / 2 - handleSpacing/2, y + bagHeight * 0.2);
-    context.bezierCurveTo(
-      x + bagWidth/2 - handleSpacing/2 - handleWidth, handleY + handleHeight/2,
-      x + bagWidth/2 - handleSpacing/2 - handleWidth, handleY,
-      x + bagWidth/2 - handleSpacing/2, handleY
-    );
-    context.lineWidth = 5;
-    context.strokeStyle = mintColor;
-    context.stroke();
-    
-    // Right handle
-    context.beginPath();
-    context.moveTo(x + bagWidth / 2 + handleSpacing/2, y + bagHeight * 0.2);
-    context.bezierCurveTo(
-      x + bagWidth/2 + handleSpacing/2 + handleWidth, handleY + handleHeight/2,
-      x + bagWidth/2 + handleSpacing/2 + handleWidth, handleY,
-      x + bagWidth/2 + handleSpacing/2, handleY
-    );
-    context.stroke();
-    
-    // Middle section line
-    context.beginPath();
-    context.moveTo(x, y + bagHeight * 0.4);
-    context.lineTo(x + bagWidth, y + bagHeight * 0.4);
-    context.lineWidth = 2;
-    context.strokeStyle = '#CAEFC8';
-    context.stroke();
-    
-    // Pocket
-    context.beginPath();
-    const pocketWidth = bagWidth * 0.4;
-    const pocketHeight = bagHeight * 0.3;
-    const pocketX = x + (bagWidth - pocketWidth) / 2;
-    const pocketY = y + bagHeight * 0.45;
-    context.rect(pocketX, pocketY, pocketWidth, pocketHeight);
-    context.strokeStyle = '#CAEFC8';
-    context.stroke();
+  // Helper function to shade color
+  const shadeColor = (color, percent) => {
+    let R = parseInt(color.substring(1,3),16);
+    let G = parseInt(color.substring(3,5),16);
+    let B = parseInt(color.substring(5,7),16);
+
+    R = parseInt(R * (100 + percent) / 100);
+    G = parseInt(G * (100 + percent) / 100);
+    B = parseInt(B * (100 + percent) / 100);
+
+    R = (R<255) ? R : 255;  
+    G = (G<255) ? G : 255;  
+    B = (B<255) ? B : 255;  
+
+    R = Math.round(R);
+    G = Math.round(G);
+    B = Math.round(B);
+
+    const RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
+    const GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
+    const BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+
+    return "#"+RR+GG+BB;
   };
   
   // Fallback for roundRect for browsers that don't support it
@@ -140,6 +66,101 @@ const CustomizeBag = () => {
     ctx.quadraticCurveTo(x, y, x + radius, y);
     ctx.closePath();
   };
+  
+  const drawPlaceholderBag = (context, color) => {
+    if (!context) return;
+    
+    const canvas = canvasRef.current;
+    const bagWidth = canvas.width * 0.7;
+    const bagHeight = canvas.height * 0.8;
+    const x = (canvas.width - bagWidth) / 2;
+    const y = (canvas.height - bagHeight) / 2;
+    
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw the bag shape
+    context.fillStyle = color;
+    
+    // Use roundRect if available, otherwise use fallback
+    if (context.roundRect) {
+      context.beginPath();
+      context.roundRect(x, y, bagWidth, bagHeight, 15);
+      context.fill();
+    } else {
+      roundRectFallback(context, x, y, bagWidth, bagHeight, 15);
+      context.fill();
+    }
+    
+    // Add some shading for dimension
+    const handleWidth = bagWidth * 0.4;
+    const handleHeight = bagHeight * 0.1;
+    const handleX = x + (bagWidth - handleWidth) / 2;
+    const handleY = y - handleHeight / 2;
+    
+    // Draw handle
+    context.fillStyle = shadeColor(color, -10);
+    
+    if (context.roundRect) {
+      context.beginPath();
+      context.roundRect(handleX, handleY, handleWidth, handleHeight, 10);
+      context.fill();
+    } else {
+      roundRectFallback(context, handleX, handleY, handleWidth, handleHeight, 10);
+      context.fill();
+    }
+    
+    // Add some shading to bottom of bag
+    context.fillStyle = shadeColor(color, -15);
+    context.beginPath();
+    context.moveTo(x, y + bagHeight * 0.8);
+    context.lineTo(x + bagWidth, y + bagHeight * 0.8);
+    context.lineTo(x + bagWidth, y + bagHeight);
+    context.lineTo(x, y + bagHeight);
+    context.closePath();
+    context.fill();
+  };
+  
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    const context = canvas.getContext('2d');
+    setCtx(context);
+    
+    const img = new Image();
+    img.src = '/erayasBagDesign.png';
+    
+    img.onload = () => {
+      setBagImage(img);
+      
+      drawBagWithColor(context, img, bagColor);
+      
+      saveState(canvas);
+      
+      setIsCanvasReady(true);
+    };
+    
+    img.onerror = (e) => {
+      console.error("Error loading bag image:", e);
+      drawPlaceholderBag(context, bagColor);
+      saveState(canvas);
+      setIsCanvasReady(true);
+    };
+  }, []);
+  
+  useEffect(() => {
+    if (!ctx || (!bagImage && !isCanvasReady)) return;
+    
+    if (bagImage) {
+      drawBagWithColor(ctx, bagImage, bagColor);
+    } else {
+      drawPlaceholderBag(ctx, bagColor);
+    }
+    
+    saveState(canvasRef.current);
+  }, [bagColor]);
   
   // Handle window resize
   useEffect(() => {
@@ -161,19 +182,19 @@ const CustomizeBag = () => {
       
       // Redraw bag and saved drawing
       if (bagImage) {
-        drawBag(ctx, bagImage);
+        drawBagWithColor(ctx, bagImage, bagColor);
       } else {
-        drawPlaceholderBag(ctx);
+        drawPlaceholderBag(ctx, bagColor);
       }
       ctx.drawImage(tempCanvas, 0, 0, canvas.width, canvas.height);
     };
     
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [ctx, bagImage, isCanvasReady]);
+  }, [ctx, bagImage, isCanvasReady, bagColor]);
   
-  // Draw bag function with provided bag image - simplified to not use color overlay
-  const drawBag = (context, img) => {
+  // Draw bag function with color overlay
+  const drawBagWithColor = (context, img, color) => {
     if (!context || !img) return;
     
     // Clear canvas
@@ -197,8 +218,18 @@ const CustomizeBag = () => {
     const x = (canvas.width - drawWidth) / 2;
     const y = (canvas.height - drawHeight) / 2;
     
-    // Draw the mint bag image (no color overlay needed)
+    // First draw the bag image
     context.drawImage(img, x, y, drawWidth, drawHeight);
+    
+    // Then apply color overlay using composite operation
+    context.globalCompositeOperation = 'source-atop';
+    context.fillStyle = color;
+    context.globalAlpha = 0.8; // Adjust transparency to allow some texture to show through
+    context.fillRect(x, y, drawWidth, drawHeight);
+    
+    // Reset composite operation and alpha
+    context.globalCompositeOperation = 'source-over';
+    context.globalAlpha = 1.0;
   };
   
   // Save canvas state
@@ -361,7 +392,7 @@ const CustomizeBag = () => {
       const dataURL = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.href = dataURL;
-      link.download = 'eraya-custom-mint-bag.png';
+      link.download = 'erayasBagDesign.png';
       link.click();
     } catch (e) {
       console.error("Error saving design:", e);
@@ -372,13 +403,43 @@ const CustomizeBag = () => {
   return (
     <section className="customize-page">
       <Container>
-        <h1 className="section-title mb-4">Customize Your Mint Bag</h1>
-        <p className="section-subtitle mb-5">Design a unique mint-colored bag that reflects your personal style</p>
+        <h1 className="section-title mb-4">Customize Your Bag</h1>
+        <p className="section-subtitle mb-5">Design a unique bag that reflects your personal style</p>
         
         <Row>
           <Col md={3}>
             <div className="customize-toolbar">
               <h5 className="text-white mb-3">Tools</h5>
+              
+              {/* Bag Color Selection */}
+              <div className="mb-4">
+                <label className="text-white d-block mb-2">
+                  <FaPalette className="me-2" />
+                  Bag Color
+                </label>
+                <div className="d-flex flex-wrap gap-2">
+                  {colorOptions.map((colorOption) => (
+                    <div 
+                      key={colorOption.value}
+                      onClick={() => setBagColor(colorOption.value)}
+                      className="color-option"
+                      title={colorOption.name}
+                      style={{
+                        backgroundColor: colorOption.value,
+                        width: '30px',
+                        height: '30px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        border: bagColor === colorOption.value ? '2px solid white' : '1px solid rgba(255,255,255,0.3)',
+                        boxShadow: bagColor === colorOption.value ? '0 0 0 2px var(--primary-color)' : 'none'
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="mt-2 text-white-50 small">
+                  Selected: {colorOptions.find(c => c.value === bagColor)?.name || 'Custom'}
+                </div>
+              </div>
               
               <div className="mb-3">
                 <Button 
@@ -400,7 +461,7 @@ const CustomizeBag = () => {
               </div>
               
               <div className="mb-3">
-                <label className="text-white d-block mb-2">Color</label>
+                <label className="text-white d-block mb-2">Drawing Color</label>
                 <input
                   type="color"
                   className="color-picker"

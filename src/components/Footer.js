@@ -24,17 +24,6 @@ const Footer = () => {
               </a>
             </div>
           </Col>
-          <Col lg={4} md={6} className="mb-4">
-            <h5>Quick Links</h5>
-            <ul className="list-unstyled footer-links">
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/customize">Customize Your Bag</Link></li>
-              <li><Link to="/shop">Shop</Link></li>
-              <li><Link to="/about">About Us</Link></li>
-              <li><Link to="/blogs">Blogs</Link></li>
-              <li><Link to="/contact">Contact Us</Link></li>
-            </ul>
-          </Col>
           <Col lg={4} md={12} className="mb-4">
             <h5>Contact Us</h5>
             <div className="footer-contact">
