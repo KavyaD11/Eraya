@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Navbar as BootstrapNavbar, Nav, Button } from 'react-bootstrap';
+import { Container, Navbar as BootstrapNavbar, Nav, } from 'react-bootstrap';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -21,18 +21,18 @@ const Navbar = () => {
   }, []);
 
   return (
-    <BootstrapNavbar 
-      expand="lg" 
-      fixed="top" 
+    <BootstrapNavbar
+      expand="lg"
+      fixed="top"
       className={`${scrolled ? 'shadow-sm' : ''}`}
       variant="dark"
     >
       <Container>
         <Link to="/" className="navbar-brand">
-          <img 
-            src="Eraya'sLogo.png" 
-            alt="ERAYA Logo" 
-            height="50" 
+          <img
+            src="Eraya'sLogo.png"
+            alt="ERAYA Logo"
+            height="50"
             className="d-inline-block align-top me-2"
           />
         </Link>
@@ -43,7 +43,6 @@ const Navbar = () => {
             <Nav.Link as={Link} to="/customize">Customize</Nav.Link>
             <Nav.Link as={Link} to="/shop">Shop</Nav.Link>
             <Nav.Link as={Link} to="/about">About Us</Nav.Link>
-            <Nav.Link as={Link} to="/blogs">Blogs</Nav.Link>
             <Nav.Link as={Link} to="/contact">Contact Us</Nav.Link>
           </Nav>
         </BootstrapNavbar.Collapse>

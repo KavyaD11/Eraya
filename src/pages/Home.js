@@ -5,17 +5,16 @@ import { Link } from 'react-router-dom';
 const Home = () => {
   return (
     <>
-      {/* Hero  */}
-      <section className="hero">
-        <div className="hero-bg-image"></div>
-        <div className="hero-bg-overlay"></div>
+      <section className="head">
+        <div className="head-bg-image"></div>
+        <div className="head-bg-overlay"></div>
         <Container>
-          <div className="hero-content">
-            <h1 className="hero-title">ERAYA</h1>
-            <p className="hero-subtitle">Style Your Way</p>
+          <div className="head-content">
+            <h1 className="head-title">ERAYA</h1>
+            <p className="head-subtitle">Style Your Way</p>
           </div>
         </Container>
-        <div className="hero-blur-gradient"></div>
+        <div className="head-blur-gradient"></div>
       </section>
 
 
@@ -56,7 +55,7 @@ const Home = () => {
             </Col>
 
             <Col lg={4} md={6} className="mb-4">
-            <div className="category-card">
+              <div className="category-card">
                 <div className="card-img-container">
                   <img src="/Bag12.png" alt="..." className="category-img" />
                 </div>
@@ -68,7 +67,7 @@ const Home = () => {
             </Col>
 
             <Col lg={4} md={6} className="mb-4">
-            <div className="category-card">
+              <div className="category-card">
                 <div className="card-img-container">
                   <img src="/Bag3.png" alt="..." className="category-img" />
                 </div>
@@ -111,7 +110,7 @@ const Home = () => {
             <Col lg={4} md={6} className="mb-4">
               <div className="feature-card text-center">
                 <div className="feature-icon mb-3">
-                  <i className="fas fa-heart fa-3x" style={{ color: 'var(--secondary-color)' }}></i>
+                  <i className="fas fa-heart fa-3x" style={{ color: '#e0b1cb' }}></i>
                 </div>
                 <h4 className="text-white mb-3">Made with Love</h4>
                 <p className="text-light">Each bag is carefully crafted with attention to every detail.</p>

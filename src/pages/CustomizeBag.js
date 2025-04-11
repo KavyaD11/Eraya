@@ -27,7 +27,6 @@ const CustomizeBag = () => {
     { name: 'Peach', value: '#FFCCBC' }
   ];
   
-  // Helper function to shade color
   const shadeColor = (color, percent) => {
     let R = parseInt(color.substring(1,3),16);
     let G = parseInt(color.substring(3,5),16);
@@ -52,7 +51,6 @@ const CustomizeBag = () => {
     return "#"+RR+GG+BB;
   };
   
-  // Fallback for roundRect for browsers that don't support it
   const roundRectFallback = (ctx, x, y, width, height, radius) => {
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
@@ -78,10 +76,8 @@ const CustomizeBag = () => {
     
     context.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Draw the bag shape
     context.fillStyle = color;
     
-    // Use roundRect if available, otherwise use fallback
     if (context.roundRect) {
       context.beginPath();
       context.roundRect(x, y, bagWidth, bagHeight, 15);
@@ -91,13 +87,11 @@ const CustomizeBag = () => {
       context.fill();
     }
     
-    // Add some shading for dimension
     const handleWidth = bagWidth * 0.4;
     const handleHeight = bagHeight * 0.1;
     const handleX = x + (bagWidth - handleWidth) / 2;
     const handleY = y - handleHeight / 2;
     
-    // Draw handle
     context.fillStyle = shadeColor(color, -10);
     
     if (context.roundRect) {
@@ -109,7 +103,6 @@ const CustomizeBag = () => {
       context.fill();
     }
     
-    // Add some shading to bottom of bag
     context.fillStyle = shadeColor(color, -15);
     context.beginPath();
     context.moveTo(x, y + bagHeight * 0.8);
@@ -162,7 +155,6 @@ const CustomizeBag = () => {
     saveState(canvasRef.current);
   }, [bagColor]);
   
-  // Handle window resize
   useEffect(() => {
     const handleResize = () => {
       if (!ctx || (!bagImage && !isCanvasReady)) return;
@@ -171,16 +163,13 @@ const CustomizeBag = () => {
       const tempCanvas = document.createElement('canvas');
       const tempCtx = tempCanvas.getContext('2d');
       
-      // Save current drawing
       tempCanvas.width = canvas.width;
       tempCanvas.height = canvas.height;
       tempCtx.drawImage(canvas, 0, 0);
       
-      // Resize canvas
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
       
-      // Redraw bag and saved drawing
       if (bagImage) {
         drawBagWithColor(ctx, bagImage, bagColor);
       } else {
@@ -193,11 +182,9 @@ const CustomizeBag = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, [ctx, bagImage, isCanvasReady, bagColor]);
   
-  // Draw bag function with color overlay
   const drawBagWithColor = (context, img, color) => {
     if (!context || !img) return;
     
-    // Clear canvas
     const canvas = canvasRef.current;
     context.clearRect(0, 0, canvas.width, canvas.height);
     
@@ -205,7 +192,6 @@ const CustomizeBag = () => {
     
     let drawWidth, drawHeight;
     
-    // Calculate dimensions to maintain aspect ratio and fit within canvas
     if (canvas.width / canvas.height > aspectRatio) {
       drawHeight = canvas.height * 0.85;
       drawWidth = drawHeight * aspectRatio;
@@ -214,25 +200,21 @@ const CustomizeBag = () => {
       drawHeight = drawWidth / aspectRatio;
     }
     
-    // Draw bag centered
     const x = (canvas.width - drawWidth) / 2;
     const y = (canvas.height - drawHeight) / 2;
     
-    // First draw the bag image
     context.drawImage(img, x, y, drawWidth, drawHeight);
     
-    // Then apply color overlay using composite operation
     context.globalCompositeOperation = 'source-atop';
     context.fillStyle = color;
-    context.globalAlpha = 0.8; // Adjust transparency to allow some texture to show through
+    context.globalAlpha = 0.8;
     context.fillRect(x, y, drawWidth, drawHeight);
     
-    // Reset composite operation and alpha
     context.globalCompositeOperation = 'source-over';
     context.globalAlpha = 1.0;
   };
   
-  // Save canvas state
+  
   const saveState = (canvas) => {
     if (!canvas) return;
     
@@ -246,7 +228,6 @@ const CustomizeBag = () => {
     }
   };
   
-  // Undo function
   const undo = () => {
     if (historyIndex > 0 && ctx) {
       const newIndex = historyIndex - 1;
@@ -260,7 +241,7 @@ const CustomizeBag = () => {
     }
   };
   
-  // Redo function
+ 
   const redo = () => {
     if (historyIndex < history.length - 1 && ctx) {
       const newIndex = historyIndex + 1;
@@ -274,7 +255,6 @@ const CustomizeBag = () => {
     }
   };
   
-  // Start drawing
   const startDrawing = (e) => {
     if (tool === 'brush' && ctx) {
       setIsDrawing(true);
@@ -282,7 +262,6 @@ const CustomizeBag = () => {
       let x = e.clientX - rect.left;
       let y = e.clientY - rect.top;
       
-      // Scale coordinates for high-DPI displays
       const scale = canvasRef.current.width / rect.width;
       x *= scale;
       y *= scale;
@@ -295,7 +274,6 @@ const CustomizeBag = () => {
     }
   };
   
-  // Draw
   const draw = (e) => {
     if (!isDrawing || tool !== 'brush' || !ctx) return;
     
@@ -303,7 +281,6 @@ const CustomizeBag = () => {
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
     
-    // Scale coordinates for high-DPI displays
     const scale = canvasRef.current.width / rect.width;
     x *= scale;
     y *= scale;
@@ -312,7 +289,6 @@ const CustomizeBag = () => {
     ctx.stroke();
   };
   
-  // End drawing
   const endDrawing = () => {
     if (isDrawing && ctx) {
       setIsDrawing(false);
@@ -323,13 +299,11 @@ const CustomizeBag = () => {
     }
   };
   
-  // Add text
   const addText = () => {
     if (text.trim() === '' || !ctx) return;
     
     const canvas = canvasRef.current;
     
-    // Center text on bag
     const x = canvas.width / 2;
     const y = canvas.height / 2;
     
@@ -342,7 +316,6 @@ const CustomizeBag = () => {
     setText('');
   };
   
-  // Add image
   const addImage = (e) => {
     if (!ctx) return;
     
@@ -355,7 +328,6 @@ const CustomizeBag = () => {
       img.onload = () => {
         const canvas = canvasRef.current;
         
-        // Calculate dimensions to maintain aspect ratio and fit within bag
         const bagWidth = canvas.width * 0.5;
         const bagHeight = canvas.height * 0.5;
         let imgWidth = img.width;
@@ -371,7 +343,6 @@ const CustomizeBag = () => {
           imgHeight = bagHeight;
         }
         
-        // Draw image centered on bag
         const x = (canvas.width - imgWidth) / 2;
         const y = (canvas.height - imgHeight) / 2;
         
@@ -383,7 +354,6 @@ const CustomizeBag = () => {
     reader.readAsDataURL(file);
   };
   
-  // Save design
   const saveDesign = () => {
     if (!canvasRef.current) return;
     
@@ -411,7 +381,6 @@ const CustomizeBag = () => {
             <div className="customize-toolbar">
               <h5 className="text-white mb-3">Tools</h5>
               
-              {/* Bag Color Selection */}
               <div className="mb-4">
                 <label className="text-white d-block mb-2">
                   <FaPalette className="me-2" />

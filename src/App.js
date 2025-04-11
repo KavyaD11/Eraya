@@ -7,7 +7,6 @@ import Home from './pages/Home';
 import CustomizeBag from './pages/CustomizeBag';
 import Shop from './pages/Shop';
 import AboutUs from './pages/AboutUs';
-import Blogs from './pages/Blogs';
 import ContactUs from './pages/ContactUs';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -22,7 +21,6 @@ function App() {
           <Route path="/customize" element={<CustomizeBag />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/about" element={<AboutUs />} />
-          <Route path="/blogs" element={<Blogs />} />
           <Route path="/contact" element={<ContactUs />} />
         </Routes>
         <Footer />
